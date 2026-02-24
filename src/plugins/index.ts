@@ -3,6 +3,8 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -24,6 +26,37 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
+  vercelBlobStorage({
+    enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    collections: {
+      media: true,
+    },
+    token: process.env.BLOB_READ_WRITE_TOKEN || '',
+  }),
+  mcpPlugin({
+    collections: {
+      pages: {
+        enabled: true,
+        description: 'Website pages with rich content blocks (hero, content, CTA, media)',
+      },
+      posts: {
+        enabled: true,
+        description: 'Blog posts with authors, categories and SEO metadata',
+      },
+      media: {
+        enabled: { find: true, create: true, update: true, delete: false },
+        description: 'Media library — images and files uploaded to Vercel Blob',
+      },
+      categories: {
+        enabled: true,
+        description: 'Hierarchical categories used to organise blog posts',
+      },
+      users: {
+        enabled: { find: true, create: false, update: false, delete: false },
+        description: 'Admin users — read-only via MCP for safety',
+      },
+    },
+  }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
