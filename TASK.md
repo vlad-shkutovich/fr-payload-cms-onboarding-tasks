@@ -1,3 +1,33 @@
+## Working Format
+
+This is a learning onboarding project. The primary goal is not just to complete the tasks, but to **deeply understand Payload CMS** — its architecture, patterns, pitfalls and best practices — in order to be prepared for work on a real production project.
+
+### What I expect from the agent
+
+When working on any task, the agent should not only write code but also **explain what is happening**:
+
+- **What and why** — the purpose behind each configuration choice and what problem it solves
+- **How it works** — a brief explanation of the underlying mechanism so the concepts are understood, not just copied
+- **Definitions and terms** — when a new Payload concept is introduced (hook, access control, adapter, collection, global, etc.), provide a clear definition
+- **Pitfalls and gotchas** — warn about non-obvious limitations, common mistakes, and edge cases related to the topic (especially security-critical patterns)
+- **Tips and best practices** — what is considered good practice in real Payload projects, what should be done differently and why
+
+### Safe environment principle
+
+This project exists as a safe space to make mistakes without real consequences. If during the work the agent notices:
+
+- An architectural decision that does not scale well — point it out
+- A pattern that would cause a bug or vulnerability in a real project — highlight it
+- An alternative approach better suited for production — mention it
+
+### Response format
+
+- First — a brief theory section covering the topic of the step (key concepts and context)
+- Then — implementation with explanations along the way
+- At the end — a summary: what was done, what is worth remembering, what to watch out for next
+
+---
+
 **Base:** [Payload Website Starter](https://github.com/payloadcms/payload/tree/main/templates/website) (`templates/website`)
 **Stack:** Payload CMS 3, Next.js 16, Neon (Postgres), Vercel, Vercel Blob, shadcn/ui
 **Domain:** Multi-brand hotel/travel platform — a hotel group where each brand (tenant) has its own site. Brands share a pool of destinations and blog content, but each brand manages its own pages, navigation, and branding.
