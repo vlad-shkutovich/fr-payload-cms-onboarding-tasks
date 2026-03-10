@@ -43,7 +43,9 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       ? `${localePrefix}${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
           reference.value.slug
         }`
-      : url
+      : url && locale && url.startsWith('/') && !url.startsWith('//')
+        ? `${localePrefix}${url}`
+        : url
 
   if (!href) return null
 
