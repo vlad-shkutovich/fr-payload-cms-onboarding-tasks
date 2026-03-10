@@ -3,17 +3,19 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import React, { useState, useEffect } from 'react'
 import { useDebounce } from '@/utilities/useDebounce'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export const Search: React.FC = () => {
   const [value, setValue] = useState('')
   const router = useRouter()
+  const pathname = usePathname()
+  const langPrefix = pathname?.match(/^\/([a-z]{2})\//)?.[0]?.slice(0, -1) || ''
 
   const debouncedValue = useDebounce(value)
 
   useEffect(() => {
-    router.push(`/search${debouncedValue ? `?q=${debouncedValue}` : ''}`)
-  }, [debouncedValue, router])
+    router.push(`${langPrefix}/search${debouncedValue ? `?q=${debouncedValue}` : ''}`)
+  }, [debouncedValue, langPrefix, router])
 
   return (
     <div>
