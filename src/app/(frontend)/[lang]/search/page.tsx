@@ -15,7 +15,10 @@ type Args = {
     q: string
   }>
 }
-export default async function Page({ params: paramsPromise, searchParams: searchParamsPromise }: Args) {
+export default async function Page({
+  params: paramsPromise,
+  searchParams: searchParamsPromise,
+}: Args) {
   const { lang } = await paramsPromise
   const locale = isValidLocale(lang) ? lang : 'en'
   const { q: query } = await searchParamsPromise

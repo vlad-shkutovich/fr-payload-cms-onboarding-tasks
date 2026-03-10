@@ -68,7 +68,11 @@ export function lexicalHeading(text: string, tag: 'h1' | 'h2' | 'h3' | 'h4' = 'h
   }
 }
 
-export function lexicalHeadingAndParagraph(heading: string, paragraph: string, tag: 'h2' | 'h3' = 'h2') {
+export function lexicalHeadingAndParagraph(
+  heading: string,
+  paragraph: string,
+  tag: 'h2' | 'h3' = 'h2',
+) {
   return {
     root: {
       type: 'root' as const,

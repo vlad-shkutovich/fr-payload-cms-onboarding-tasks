@@ -73,7 +73,7 @@ export const homePageDE = (heroImageId: string | number, metaImageId: string | n
                 format: 0,
                 mode: 'normal' as const,
                 style: '',
-                text: ", um den Inhalt dieser Website zu verwalten. Der Code dieser Vorlage ist vollständig Open-Source und kann ",
+                text: ', um den Inhalt dieser Website zu verwalten. Der Code dieser Vorlage ist vollständig Open-Source und kann ',
                 version: 1,
               },
               {
@@ -154,7 +154,7 @@ export const homePageDE = (heroImageId: string | number, metaImageId: string | n
           enableLink: false,
           richText: lexicalHeadingAndParagraph(
             'Admin-Dashboard',
-            "Verwalten Sie die Seiten und Beiträge dieser Website über das Admin-Dashboard.",
+            'Verwalten Sie die Seiten und Beiträge dieser Website über das Admin-Dashboard.',
             'h3',
           ),
           size: 'oneThird' as const,
@@ -280,13 +280,13 @@ export const post2DE = {
 export const post3DE = {
   title: 'Dollar und Sinn: Die Finanzprognose',
   content: lexicalHeadingAndParagraph(
-    "Geld ist nicht nur Währung; es ist eine Sprache. Tauchen Sie ein in ihre Nuancen, wo Strategie auf Intuition trifft.",
-    "Geld transzendiert das bloße Konzept von Münzen und Papiergeld; es wird zu einer tiefgründigen Sprache, die von Wert, Vertrauen und gesellschaftlichen Strukturen spricht. Dieser Inhalt ist vollständig dynamisch und verwendet benutzerdefinierte Layout-Blöcke, die im CMS konfiguriert sind.",
+    'Geld ist nicht nur Währung; es ist eine Sprache. Tauchen Sie ein in ihre Nuancen, wo Strategie auf Intuition trifft.',
+    'Geld transzendiert das bloße Konzept von Münzen und Papiergeld; es wird zu einer tiefgründigen Sprache, die von Wert, Vertrauen und gesellschaftlichen Strukturen spricht. Dieser Inhalt ist vollständig dynamisch und verwendet benutzerdefinierte Layout-Blöcke, die im CMS konfiguriert sind.',
     'h2',
   ),
   meta: {
     description:
-      "Geld ist nicht nur Währung; es ist eine Sprache. Tauchen Sie ein in ihre Nuancen, wo Strategie auf Intuition trifft.",
+      'Geld ist nicht nur Währung; es ist eine Sprache. Tauchen Sie ein in ihre Nuancen, wo Strategie auf Intuition trifft.',
     title: 'Dollar und Sinn: Die Finanzprognose',
   },
 }
@@ -297,9 +297,7 @@ export const mediaAltDE: Record<string, string> = {
   'Straight metallic shapes with a blue gradient': 'Gerade metallische Formen mit blauem Verlauf',
 }
 
-export const mediaCaptionDE = lexicalParagraph(
-  'Foto von Andrew Kliatskyi auf Unsplash.',
-)
+export const mediaCaptionDE = lexicalParagraph('Foto von Andrew Kliatskyi auf Unsplash.')
 
 export const headerNavDE = (contactPageId: string | number) => ({
   navItems: [
