@@ -1,12 +1,11 @@
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import React from 'react'
-import { draftMode } from 'next/headers'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
-import { isValidLocale, type Locale } from '@/i18n/config'
-import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { isValidLocale } from '@/i18n/config'
 
 type Args = {
   children: React.ReactNode
