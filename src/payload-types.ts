@@ -438,6 +438,7 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  role: 'super-admin' | 'tenant-admin' | 'tenant-editor';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1472,6 +1473,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

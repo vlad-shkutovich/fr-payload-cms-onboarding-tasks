@@ -38,10 +38,14 @@ When **a task (or step) is completed** and the user has confirmed that it works 
 1. **Title** — `# [Feature name] flow` (e.g. `# Localization flow`)
 
 2. **Configuration** — what was set up. Short code snippets with file paths and line numbers. Example:
+
    ```markdown
    ### Payload (`src/payload.config.ts`)
+
    - Locales, defaultLocale, fallback
+
    ### Frontend (`src/i18n/config.ts`)
+
    - locales array, isValidLocale()
    ```
 
