@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { hasRole } from '../../access/hasRole'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
@@ -24,10 +24,11 @@ import {
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
-    create: authenticated,
-    delete: authenticated,
+    // Only admins can create/delete pages; editors can update but not restructure
+    create: hasRole('super-admin', 'tenant-admin'),
+    delete: hasRole('super-admin', 'tenant-admin'),
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: hasRole('super-admin', 'tenant-admin', 'tenant-editor'),
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { hasRole } from '../access/hasRole'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,10 +19,12 @@ export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
   access: {
+    // All authenticated users can upload — "upload" is a create operation in Payload
     create: authenticated,
-    delete: authenticated,
+    // Only admins can delete or modify existing media entries
+    delete: hasRole('super-admin', 'tenant-admin'),
     read: anyone,
-    update: authenticated,
+    update: hasRole('super-admin', 'tenant-admin'),
   },
   fields: [
     {
