@@ -1,5 +1,6 @@
-import PageTemplate, { generateMetadata } from './[slug]/page'
+import { redirect } from 'next/navigation'
+import { defaultLocale } from '@/i18n/config'
 
-export default PageTemplate
-
-export { generateMetadata }
+export default function RootPage() {
+  redirect(`/${defaultLocale}`)
+}

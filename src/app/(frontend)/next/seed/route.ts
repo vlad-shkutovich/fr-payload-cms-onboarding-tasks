@@ -23,9 +23,15 @@ export async function POST(): Promise<Response> {
 
     await seed({ payload, req: payloadReq })
 
-    return Response.json({ success: true })
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
   } catch (e) {
     payload.logger.error({ err: e, message: 'Error seeding data' })
-    return new Response('Error seeding data.', { status: 500 })
+    return new Response(JSON.stringify({ error: 'Error seeding data.' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 }

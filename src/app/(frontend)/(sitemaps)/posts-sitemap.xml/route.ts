@@ -2,6 +2,7 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
+import { locales } from '@/i18n/config'
 
 const getPostsSitemap = unstable_cache(
   async () => {
@@ -31,14 +32,16 @@ const getPostsSitemap = unstable_cache(
 
     const dateFallback = new Date().toISOString()
 
-    const sitemap = results.docs
-      ? results.docs
-          .filter((post) => Boolean(post?.slug))
-          .map((post) => ({
-            loc: `${SITE_URL}/posts/${post?.slug}`,
-            lastmod: post.updatedAt || dateFallback,
-          }))
-      : []
+    const sitemap = locales.flatMap((locale) =>
+      results.docs
+        ? results.docs
+            .filter((post) => Boolean(post?.slug))
+            .map((post) => ({
+              loc: `${SITE_URL}/${locale}/posts/${post?.slug}`,
+              lastmod: post.updatedAt || dateFallback,
+            }))
+        : [],
+    )
 
     return sitemap
   },

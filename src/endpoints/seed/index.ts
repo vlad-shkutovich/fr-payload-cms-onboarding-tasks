@@ -9,6 +9,18 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import {
+  categoriesDE,
+  contactPageDE,
+  footerNavDE,
+  headerNavDE,
+  homePageDE,
+  mediaAltDE,
+  mediaCaptionDE,
+  post1DE,
+  post2DE,
+  post3DE,
+} from './seed-de'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -98,44 +110,98 @@ export const seed = async ({
     ),
   ])
 
-  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
-    payload.create({
-      collection: 'users',
-      data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
-        password: 'password',
-      },
-    }),
-    payload.create({
-      collection: 'media',
-      data: image1,
-      file: image1Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: image2,
-      file: image2Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: image2,
-      file: image3Buffer,
-    }),
-    payload.create({
-      collection: 'media',
-      data: imageHero1,
-      file: hero1Buffer,
-    }),
-    categories.map((category) =>
+  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc, ...categoryDocs] =
+    await Promise.all([
       payload.create({
-        collection: 'categories',
+        collection: 'users',
         data: {
-          title: category,
-          slug: category,
+          name: 'Demo Author',
+          email: 'demo-author@example.com',
+          password: 'password',
         },
       }),
+      payload.create({
+        collection: 'media',
+        data: image1,
+        file: image1Buffer,
+        locale: 'en',
+      }),
+      payload.create({
+        collection: 'media',
+        data: image2,
+        file: image2Buffer,
+        locale: 'en',
+      }),
+      payload.create({
+        collection: 'media',
+        data: image2,
+        file: image3Buffer,
+        locale: 'en',
+      }),
+      payload.create({
+        collection: 'media',
+        data: imageHero1,
+        file: hero1Buffer,
+        locale: 'en',
+      }),
+      ...categories.map((category) =>
+        payload.create({
+          collection: 'categories',
+          data: {
+            title: category,
+            slug: category,
+          },
+          locale: 'en',
+        }),
+      ),
+    ])
+
+  payload.logger.info(`— Adding German (de) translations...`)
+
+  await Promise.all([
+    ...categoryDocs.map((doc, i) =>
+      payload.update({
+        collection: 'categories',
+        id: doc.id,
+        data: { title: categoriesDE[categories[i]] ?? categories[i] },
+        locale: 'de',
+      }),
     ),
+    payload.update({
+      collection: 'media',
+      id: image1Doc.id,
+      data: {
+        alt: mediaAltDE[image1.alt ?? ''] ?? image1.alt,
+        caption: mediaCaptionDE as Record<string, unknown>,
+      },
+      locale: 'de',
+    }),
+    payload.update({
+      collection: 'media',
+      id: image2Doc.id,
+      data: {
+        alt: mediaAltDE[image2.alt ?? ''] ?? image2.alt,
+        caption: mediaCaptionDE as Record<string, unknown>,
+      },
+      locale: 'de',
+    }),
+    payload.update({
+      collection: 'media',
+      id: image3Doc.id,
+      data: {
+        alt: mediaAltDE[image2.alt ?? ''] ?? image2.alt,
+        caption: mediaCaptionDE as Record<string, unknown>,
+      },
+      locale: 'de',
+    }),
+    payload.update({
+      collection: 'media',
+      id: imageHomeDoc.id,
+      data: {
+        alt: mediaAltDE[imageHero1.alt ?? ''] ?? imageHero1.alt,
+      },
+      locale: 'de',
+    }),
   ])
 
   payload.logger.info(`— Seeding posts...`)
@@ -145,6 +211,7 @@ export const seed = async ({
   const post1Doc = await payload.create({
     collection: 'posts',
     depth: 0,
+    locale: 'en',
     context: {
       disableRevalidate: true,
     },
@@ -154,6 +221,7 @@ export const seed = async ({
   const post2Doc = await payload.create({
     collection: 'posts',
     depth: 0,
+    locale: 'en',
     context: {
       disableRevalidate: true,
     },
@@ -163,6 +231,7 @@ export const seed = async ({
   const post3Doc = await payload.create({
     collection: 'posts',
     depth: 0,
+    locale: 'en',
     context: {
       disableRevalidate: true,
     },
@@ -192,6 +261,64 @@ export const seed = async ({
     },
   })
 
+  // Sequential updates to avoid deadlock on posts_rels (relatedPosts/authors)
+  const seedContext = { disableRevalidate: true }
+
+  // DE updates (Payload #12536: updating with locale 'de' can overwrite EN in localized blocks)
+  await payload.update({
+    collection: 'posts',
+    id: post1Doc.id,
+    data: post1DE as Record<string, unknown>,
+    locale: 'de',
+    context: seedContext,
+  })
+  await payload.update({
+    collection: 'posts',
+    id: post2Doc.id,
+    data: post2DE as Record<string, unknown>,
+    locale: 'de',
+    context: seedContext,
+  })
+  await payload.update({
+    collection: 'posts',
+    id: post3Doc.id,
+    data: post3DE as Record<string, unknown>,
+    locale: 'de',
+    context: seedContext,
+  })
+
+  // Restore EN content (merge preserves DE from previous update)
+  await payload.update({
+    collection: 'posts',
+    id: post1Doc.id,
+    data: {
+      ...post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
+      relatedPosts: [post2Doc.id, post3Doc.id],
+    } as Record<string, unknown>,
+    locale: 'en',
+    context: seedContext,
+  })
+  await payload.update({
+    collection: 'posts',
+    id: post2Doc.id,
+    data: {
+      ...post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
+      relatedPosts: [post1Doc.id, post3Doc.id],
+    } as Record<string, unknown>,
+    locale: 'en',
+    context: seedContext,
+  })
+  await payload.update({
+    collection: 'posts',
+    id: post3Doc.id,
+    data: {
+      ...post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
+      relatedPosts: [post1Doc.id, post2Doc.id],
+    } as Record<string, unknown>,
+    locale: 'en',
+    context: seedContext,
+  })
+
   payload.logger.info(`— Seeding contact form...`)
 
   const contactForm = await payload.create({
@@ -202,24 +329,61 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [homePage, contactPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
+      locale: 'en',
       data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
+      locale: 'en',
       data: contactPageData({ contactForm: contactForm }),
     }),
   ])
+
+  // Sequential updates to avoid deadlock on relationship tables
+  // DE updates (Payload #12536: can overwrite EN in localized blocks)
+  await payload.update({
+    collection: 'pages',
+    id: homePage.id,
+    data: homePageDE(imageHomeDoc.id, image2Doc.id) as Record<string, unknown>,
+    locale: 'de',
+    context: seedContext,
+  })
+  await payload.update({
+    collection: 'pages',
+    id: contactPage.id,
+    data: contactPageDE(contactForm.id) as Record<string, unknown>,
+    locale: 'de',
+    context: seedContext,
+  })
+
+  // Restore EN content (merge preserves DE from previous update)
+  await payload.update({
+    collection: 'pages',
+    id: homePage.id,
+    data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }) as Record<string, unknown>,
+    locale: 'en',
+    context: seedContext,
+  })
+  await payload.update({
+    collection: 'pages',
+    id: contactPage.id,
+    data: contactPageData({ contactForm }) as Record<string, unknown>,
+    locale: 'en',
+    context: seedContext,
+  })
 
   payload.logger.info(`— Seeding globals...`)
 
   await Promise.all([
     payload.updateGlobal({
       slug: 'header',
+      locale: 'en',
+      context: seedContext,
       data: {
         navItems: [
           {
@@ -244,6 +408,85 @@ export const seed = async ({
     }),
     payload.updateGlobal({
       slug: 'footer',
+      locale: 'en',
+      context: seedContext,
+      data: {
+        navItems: [
+          {
+            link: {
+              type: 'custom',
+              label: 'Admin',
+              url: '/admin',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Source Code',
+              newTab: true,
+              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Payload',
+              newTab: true,
+              url: 'https://payloadcms.com/',
+            },
+          },
+        ],
+      },
+    }),
+  ])
+
+  await Promise.all([
+    payload.updateGlobal({
+      slug: 'header',
+      locale: 'de',
+      context: seedContext,
+      data: headerNavDE(contactPage.id) as Record<string, unknown>,
+    }),
+    payload.updateGlobal({
+      slug: 'footer',
+      locale: 'de',
+      context: seedContext,
+      data: footerNavDE as Record<string, unknown>,
+    }),
+  ])
+
+  // Restore EN globals (merge preserves DE from previous update)
+  await Promise.all([
+    payload.updateGlobal({
+      slug: 'header',
+      locale: 'en',
+      context: seedContext,
+      data: {
+        navItems: [
+          {
+            link: {
+              type: 'custom',
+              label: 'Posts',
+              url: '/posts',
+            },
+          },
+          {
+            link: {
+              type: 'reference',
+              label: 'Contact',
+              reference: {
+                relationTo: 'pages',
+                value: contactPage.id,
+              },
+            },
+          },
+        ],
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'footer',
+      locale: 'en',
+      context: seedContext,
       data: {
         navItems: [
           {

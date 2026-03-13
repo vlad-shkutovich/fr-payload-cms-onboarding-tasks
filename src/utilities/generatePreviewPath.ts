@@ -11,19 +11,18 @@ type Props = {
   req: PayloadRequest
 }
 
-export const generatePreviewPath = ({ collection, slug }: Props) => {
-  // Allow empty strings, e.g. for the homepage
+export const generatePreviewPath = ({ collection, slug, req }: Props) => {
   if (slug === undefined || slug === null) {
     return null
   }
 
-  // Encode to support slugs with special characters
+  const locale = req.locale || 'en'
   const encodedSlug = encodeURIComponent(slug)
 
   const encodedParams = new URLSearchParams({
     slug: encodedSlug,
     collection,
-    path: `${collectionPrefixMap[collection]}/${encodedSlug}`,
+    path: `/${locale}${collectionPrefixMap[collection]}/${encodedSlug}`,
     previewSecret: process.env.PREVIEW_SECRET || '',
   })
 
