@@ -26,6 +26,38 @@ This project exists as a safe space to make mistakes without real consequences. 
 - Then — implementation with explanations along the way
 - At the end — a summary: what was done, what is worth remembering, what to watch out for next
 
+### Final step: Theoretical summary block (Notion)
+
+When **a task (or step) is completed** and the user has confirmed that it works correctly:
+
+1. **Ask:** «Ready for the theoretical summary block?»
+2. **After confirmation** — generate a comprehensive theoretical block describing the full flow of what was implemented. This goes into the user's **Notion summary** for the project.
+
+**Format** — the block must follow this exact structure (self-contained; no external reference needed):
+
+1. **Title** — `# [Feature name] flow` (e.g. `# Localization flow`)
+
+2. **Configuration** — what was set up. Short code snippets with file paths and line numbers. Example:
+   ```markdown
+   ### Payload (`src/payload.config.ts`)
+   - Locales, defaultLocale, fallback
+   ### Frontend (`src/i18n/config.ts`)
+   - locales array, isValidLocale()
+   ```
+
+3. **Flow** — how the feature works step by step. Numbered list: URL → routing → components → API. Describe the chain of data/context passing.
+
+4. **Components** — table format:
+   | Component | Source of context | Usage |
+   |-----------|-------------------|-------|
+   | Header | `locale` from layout | `getCachedGlobal('header', 1, locale)` |
+
+5. **Diagram** — ASCII or Mermaid schema showing: User request → Router → Layout → Components → API → Response.
+
+6. **Optional** — list of localized/affected fields, or other relevant details.
+
+**Style:** ~150–250 lines. Use headers (`##`, `###`), code blocks with `path:line` citations, tables. Standalone reference — no need to open the codebase to understand the flow.
+
 ---
 
 **Base:** [Payload Website Starter](https://github.com/payloadcms/payload/tree/main/templates/website) (`templates/website`)
