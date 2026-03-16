@@ -26,20 +26,12 @@ export const generateMeta = async (args: {
   const { doc, siteConfig } = args
 
   // Cascade: page-level SEO > site-config fallback > hardcoded defaults
-  const metaTitle =
-    doc?.meta?.title ||
-    siteConfig?.fallbackSEO?.metaTitle ||
-    null
+  const metaTitle = doc?.meta?.title || siteConfig?.fallbackSEO?.metaTitle || null
 
-  const metaDescription =
-    doc?.meta?.description ||
-    siteConfig?.fallbackSEO?.metaDescription ||
-    null
+  const metaDescription = doc?.meta?.description || siteConfig?.fallbackSEO?.metaDescription || null
 
   const metaImage =
-    doc?.meta?.image !== undefined
-      ? doc.meta.image
-      : siteConfig?.fallbackSEO?.ogImage
+    doc?.meta?.image !== undefined ? doc.meta.image : siteConfig?.fallbackSEO?.ogImage
 
   const ogImage = getImageURL(metaImage as Media | Config['db']['defaultIDType'] | null)
 

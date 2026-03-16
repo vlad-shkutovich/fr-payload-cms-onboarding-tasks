@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
+import { revalidateSiteConfig } from './hooks/revalidateSiteConfig'
+
 export const SiteConfig: GlobalConfig = {
   slug: 'site-config',
   admin: {
@@ -7,6 +9,9 @@ export const SiteConfig: GlobalConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [revalidateSiteConfig],
   },
   fields: [
     {
@@ -24,8 +29,7 @@ export const SiteConfig: GlobalConfig = {
       type: 'group',
       label: 'Fallback SEO',
       admin: {
-        description:
-          'Used as defaults when a page does not have its own SEO meta defined.',
+        description: 'Used as defaults when a page does not have its own SEO meta defined.',
       },
       fields: [
         {
