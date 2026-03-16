@@ -115,10 +115,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-config': SiteConfig;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-config': SiteConfigSelect<false> | SiteConfigSelect<true>;
   };
   locale: 'en' | 'de';
   user: User | PayloadMcpApiKey;
@@ -1876,6 +1878,32 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-config".
+ */
+export interface SiteConfig {
+  id: number;
+  siteName: string;
+  siteDescription?: string | null;
+  /**
+   * Used as defaults when a page does not have its own SEO meta defined.
+   */
+  fallbackSEO?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  socialLinks?:
+    | {
+        platform: 'twitter' | 'instagram' | 'linkedin' | 'facebook';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1914,6 +1942,31 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-config_select".
+ */
+export interface SiteConfigSelect<T extends boolean = true> {
+  siteName?: T;
+  siteDescription?: T;
+  fallbackSEO?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        ogImage?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
         id?: T;
       };
   updatedAt?: T;

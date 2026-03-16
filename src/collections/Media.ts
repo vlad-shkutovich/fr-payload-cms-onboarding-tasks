@@ -18,6 +18,9 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
+  admin: {
+    group: 'Media',
+  },
   access: {
     // All authenticated users can upload — "upload" is a create operation in Payload
     create: authenticated,

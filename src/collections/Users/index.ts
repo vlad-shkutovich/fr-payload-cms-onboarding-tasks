@@ -26,6 +26,7 @@ export const Users: CollectionConfig = {
     update: isSuperAdmin,
   },
   admin: {
+    group: 'System',
     defaultColumns: ['name', 'email', 'role'],
     useAsTitle: 'name',
     // tenant-editors never see the Users collection in the sidebar

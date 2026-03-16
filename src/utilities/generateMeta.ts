@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import type { Media, Page, Post, Config } from '../payload-types'
+import type { Media, Page, Post, SiteConfig, Config } from '../payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
@@ -21,19 +21,35 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
+  siteConfig?: SiteConfig | null
 }): Promise<Metadata> => {
-  const { doc } = args
+  const { doc, siteConfig } = args
 
-  const ogImage = getImageURL(doc?.meta?.image)
+  // Cascade: page-level SEO > site-config fallback > hardcoded defaults
+  const metaTitle =
+    doc?.meta?.title ||
+    siteConfig?.fallbackSEO?.metaTitle ||
+    null
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+  const metaDescription =
+    doc?.meta?.description ||
+    siteConfig?.fallbackSEO?.metaDescription ||
+    null
+
+  const metaImage =
+    doc?.meta?.image !== undefined
+      ? doc.meta.image
+      : siteConfig?.fallbackSEO?.ogImage
+
+  const ogImage = getImageURL(metaImage as Media | Config['db']['defaultIDType'] | null)
+
+  const siteName = siteConfig?.siteName || 'Payload Website Template'
+  const title = metaTitle ? `${metaTitle} | ${siteName}` : siteName
 
   return {
-    description: doc?.meta?.description,
+    description: metaDescription,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: metaDescription || '',
       images: ogImage
         ? [
             {
