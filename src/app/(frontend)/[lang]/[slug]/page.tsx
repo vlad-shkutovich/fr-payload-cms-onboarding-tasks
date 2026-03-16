@@ -10,6 +10,8 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import type { SiteConfig } from '@/payload-types'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { isValidLocale, locales, type Locale } from '@/i18n/config'
@@ -81,9 +83,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { lang, slug = 'home' } = await paramsPromise
   const locale = isValidLocale(lang) ? lang : 'en'
   const decodedSlug = decodeURIComponent(slug)
-  const page = await queryPageBySlug({ slug: decodedSlug, locale })
+  const [page, siteConfig] = await Promise.all([
+    queryPageBySlug({ slug: decodedSlug, locale }),
+    getCachedGlobal('site-config', 1, locale)() as Promise<SiteConfig>,
+  ])
 
-  return generateMeta({ doc: page })
+  return generateMeta({ doc: page, siteConfig })
 }
 
 const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: Locale }) => {

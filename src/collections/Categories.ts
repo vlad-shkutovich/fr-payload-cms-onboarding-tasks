@@ -15,6 +15,7 @@ export const Categories: CollectionConfig = {
     update: isSuperAdmin,
   },
   admin: {
+    group: 'Content',
     useAsTitle: 'title',
   },
   fields: [

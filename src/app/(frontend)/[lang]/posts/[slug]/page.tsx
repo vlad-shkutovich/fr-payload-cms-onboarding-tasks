@@ -12,6 +12,8 @@ import type { Post } from '@/payload-types'
 
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { getCachedGlobal } from '@/utilities/getGlobals'
+import type { SiteConfig } from '@/payload-types'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { isValidLocale, locales, type Locale } from '@/i18n/config'
@@ -85,9 +87,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { lang, slug = '' } = await paramsPromise
   const locale = isValidLocale(lang) ? lang : 'en'
   const decodedSlug = decodeURIComponent(slug)
-  const post = await queryPostBySlug({ slug: decodedSlug, locale })
+  const [post, siteConfig] = await Promise.all([
+    queryPostBySlug({ slug: decodedSlug, locale }),
+    getCachedGlobal('site-config', 1, locale)() as Promise<SiteConfig>,
+  ])
 
-  return generateMeta({ doc: post })
+  return generateMeta({ doc: post, siteConfig })
 }
 
 const queryPostBySlug = cache(async ({ slug, locale }: { slug: string; locale: Locale }) => {
