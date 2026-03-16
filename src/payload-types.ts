@@ -70,6 +70,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    destinations: Destination;
     media: Media;
     categories: Category;
     users: User;
@@ -93,6 +94,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    destinations: DestinationsSelect<false> | DestinationsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -803,6 +805,76 @@ export interface Form {
   createdAt: string;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "destinations".
+ */
+export interface Destination {
+  id: number;
+  title: string;
+  heroImage: number | Media;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  highlights?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  bestSeason?: ('spring' | 'summer' | 'autumn' | 'winter' | 'year-round') | null;
+  country: 'italy' | 'switzerland' | 'austria' | 'germany' | 'france';
+  type: 'beach' | 'mountain' | 'city' | 'cultural';
+  waterActivities?:
+    | {
+        activity: string;
+        id?: string | null;
+      }[]
+    | null;
+  beachType?: ('sandy' | 'rocky' | 'pebble') | null;
+  /**
+   * Altitude in metres
+   */
+  altitude?: number | null;
+  skiResort?: boolean | null;
+  hikingDifficulty?: ('easy' | 'moderate' | 'hard') | null;
+  publicTransport?: boolean | null;
+  /**
+   * Score from 1 to 10
+   */
+  walkabilityScore?: number | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * API keys control which collections, resources, tools, and prompts MCP clients can access
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -895,6 +967,24 @@ export interface PayloadMcpApiKey {
      * Allow clients to find users.
      */
     find?: boolean | null;
+  };
+  destinations?: {
+    /**
+     * Allow clients to find destinations.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create destinations.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update destinations.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete destinations.
+     */
+    delete?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1100,6 +1190,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'destinations';
+        value: number | Destination;
       } | null)
     | ({
         relationTo: 'media';
@@ -1357,6 +1451,51 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "destinations_select".
+ */
+export interface DestinationsSelect<T extends boolean = true> {
+  title?: T;
+  heroImage?: T;
+  description?: T;
+  highlights?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  bestSeason?: T;
+  country?: T;
+  type?: T;
+  waterActivities?:
+    | T
+    | {
+        activity?: T;
+        id?: T;
+      };
+  beachType?: T;
+  altitude?: T;
+  skiResort?: T;
+  hikingDifficulty?: T;
+  publicTransport?: T;
+  walkabilityScore?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  categories?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1536,6 +1675,14 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
     | T
     | {
         find?: T;
+      };
+  destinations?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1989,6 +2136,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'destinations';
+          value: number | Destination;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

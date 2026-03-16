@@ -21,12 +21,14 @@ import {
   post2DE,
   post3DE,
 } from './seed-de'
+import { lexicalParagraph } from './lexical'
 
 const collections: CollectionSlug[] = [
   'categories',
   'media',
   'pages',
   'posts',
+  'destinations',
   'forms',
   'form-submissions',
   'search',
@@ -318,6 +320,91 @@ export const seed = async ({
     } as Record<string, unknown>,
     locale: 'en',
     context: seedContext,
+  })
+
+  payload.logger.info(`— Seeding destinations...`)
+
+  await payload.create({
+    collection: 'destinations',
+    depth: 0,
+    locale: 'en',
+    draft: false,
+    context: seedContext,
+    data: {
+      title: 'Swiss Alps',
+      heroImage: image1Doc.id,
+      description: lexicalParagraph(
+        'The Swiss Alps offer breathtaking mountain scenery, world-class skiing, and pristine hiking trails. A paradise for outdoor enthusiasts year-round.',
+      ),
+      country: 'switzerland',
+      type: 'mountain',
+      altitude: 2500,
+      skiResort: true,
+      hikingDifficulty: 'moderate',
+      highlights: [
+        { title: 'Matterhorn', description: 'Iconic peak and hiking destination' },
+        { title: 'Alpine Lakes', description: 'Crystal-clear mountain lakes' },
+      ],
+      bestSeason: 'winter',
+      slug: 'swiss-alps',
+      _status: 'published',
+    },
+  })
+
+  await payload.create({
+    collection: 'destinations',
+    depth: 0,
+    locale: 'en',
+    draft: false,
+    context: seedContext,
+    data: {
+      title: 'Lake Garda',
+      heroImage: image2Doc.id,
+      description: lexicalParagraph(
+        'Italy\'s largest lake combines Mediterranean charm with alpine backdrop. Perfect for water sports, wine tasting, and lakeside relaxation.',
+      ),
+      country: 'italy',
+      type: 'beach',
+      waterActivities: [
+        { activity: 'Sailing' },
+        { activity: 'Windsurfing' },
+        { activity: 'Swimming' },
+      ],
+      beachType: 'pebble',
+      highlights: [
+        { title: 'Limone sul Garda', description: 'Charming lakeside town' },
+        { title: 'Olive Groves', description: 'Famous local olive oil' },
+      ],
+      bestSeason: 'summer',
+      slug: 'lake-garda',
+      _status: 'published',
+    },
+  })
+
+  await payload.create({
+    collection: 'destinations',
+    depth: 0,
+    locale: 'en',
+    draft: false,
+    context: seedContext,
+    data: {
+      title: 'Vienna',
+      heroImage: image3Doc.id,
+      description: lexicalParagraph(
+        'Austria\'s capital blends imperial grandeur with modern culture. Museums, coffee houses, and classical music define this elegant city.',
+      ),
+      country: 'austria',
+      type: 'city',
+      publicTransport: true,
+      walkabilityScore: 9,
+      highlights: [
+        { title: 'Schönbrunn Palace', description: 'UNESCO World Heritage site' },
+        { title: 'Coffee House Culture', description: 'Traditional Viennese cafés' },
+      ],
+      bestSeason: 'year-round',
+      slug: 'vienna',
+      _status: 'published',
+    },
   })
 
   payload.logger.info(`— Seeding contact form...`)
