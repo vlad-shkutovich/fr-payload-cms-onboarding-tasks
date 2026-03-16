@@ -34,10 +34,7 @@ export const Destinations: CollectionConfig<'destinations'> = {
     country: true,
     type: true,
     heroImage: true,
-    meta: {
-      image: true,
-      description: true,
-    },
+    meta: { image: true, description: true },
   },
   admin: {
     group: 'Content',
@@ -45,16 +42,10 @@ export const Destinations: CollectionConfig<'destinations'> = {
     defaultColumns: ['title', 'country', 'type', 'updatedAt'],
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-      localized: true,
-    },
+    { name: 'title', type: 'text', required: true, localized: true },
     {
       type: 'tabs',
       tabs: [
-        // ── Tab 1: Content ──────────────────────────────────────────
         {
           label: 'Content',
           fields: [
@@ -82,15 +73,8 @@ export const Destinations: CollectionConfig<'destinations'> = {
               name: 'highlights',
               type: 'array',
               fields: [
-                {
-                  name: 'title',
-                  type: 'text',
-                  required: true,
-                },
-                {
-                  name: 'description',
-                  type: 'text',
-                },
+                { name: 'title', type: 'text', required: true },
+                { name: 'description', type: 'text' },
               ],
             },
             {
@@ -106,7 +90,6 @@ export const Destinations: CollectionConfig<'destinations'> = {
             },
           ],
         },
-        // ── Tab 2: Location & Type ───────────────────────────────────
         {
           label: 'Location & Type',
           fields: [
@@ -133,34 +116,22 @@ export const Destinations: CollectionConfig<'destinations'> = {
                 { label: 'Cultural', value: 'cultural' },
               ],
             },
-            // ── Beach fields ─────────────────────────────────────────
             {
               name: 'waterActivities',
               type: 'array',
-              admin: {
-                condition: (data) => data?.type === 'beach',
-              },
-              fields: [
-                {
-                  name: 'activity',
-                  type: 'text',
-                  required: true,
-                },
-              ],
+              admin: { condition: (data) => data?.type === 'beach' },
+              fields: [{ name: 'activity', type: 'text', required: true }],
             },
             {
               name: 'beachType',
               type: 'select',
-              admin: {
-                condition: (data) => data?.type === 'beach',
-              },
+              admin: { condition: (data) => data?.type === 'beach' },
               options: [
                 { label: 'Sandy', value: 'sandy' },
                 { label: 'Rocky', value: 'rocky' },
                 { label: 'Pebble', value: 'pebble' },
               ],
             },
-            // ── Mountain fields ──────────────────────────────────────
             {
               name: 'altitude',
               type: 'number',
@@ -172,29 +143,22 @@ export const Destinations: CollectionConfig<'destinations'> = {
             {
               name: 'skiResort',
               type: 'checkbox',
-              admin: {
-                condition: (data) => data?.type === 'mountain',
-              },
+              admin: { condition: (data) => data?.type === 'mountain' },
             },
             {
               name: 'hikingDifficulty',
               type: 'select',
-              admin: {
-                condition: (data) => data?.type === 'mountain',
-              },
+              admin: { condition: (data) => data?.type === 'mountain' },
               options: [
                 { label: 'Easy', value: 'easy' },
                 { label: 'Moderate', value: 'moderate' },
                 { label: 'Hard', value: 'hard' },
               ],
             },
-            // ── City fields ──────────────────────────────────────────
             {
               name: 'publicTransport',
               type: 'checkbox',
-              admin: {
-                condition: (data) => data?.type === 'city',
-              },
+              admin: { condition: (data) => data?.type === 'city' },
             },
             {
               name: 'walkabilityScore',
@@ -208,7 +172,6 @@ export const Destinations: CollectionConfig<'destinations'> = {
             },
           ],
         },
-        // ── Tab 3: SEO ──────────────────────────────────────────────
         {
           name: 'meta',
           label: 'SEO',
@@ -230,22 +193,14 @@ export const Destinations: CollectionConfig<'destinations'> = {
         },
       ],
     },
-    // ── Sidebar fields ───────────────────────────────────────────────
     {
       name: 'publishedAt',
       type: 'date',
-      admin: {
-        date: { pickerAppearance: 'dayAndTime' },
-        position: 'sidebar',
-      },
+      admin: { date: { pickerAppearance: 'dayAndTime' }, position: 'sidebar' },
       hooks: {
         beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
+          ({ siblingData, value }) =>
+            siblingData._status === 'published' && !value ? new Date() : value,
         ],
       },
     },
@@ -254,9 +209,7 @@ export const Destinations: CollectionConfig<'destinations'> = {
       type: 'relationship',
       relationTo: 'categories',
       hasMany: true,
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
     slugField(),
   ],
@@ -266,9 +219,7 @@ export const Destinations: CollectionConfig<'destinations'> = {
   },
   versions: {
     drafts: {
-      autosave: {
-        interval: 100,
-      },
+      // autosave omitted: causes blank create form. See https://github.com/payloadcms/payload/issues/8372
       schedulePublish: true,
     },
     maxPerDoc: 50,

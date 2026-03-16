@@ -334,7 +334,7 @@ export const seed = async ({
       title: 'Swiss Alps',
       heroImage: image1Doc.id,
       description: lexicalParagraph(
-        'The Swiss Alps offer breathtaking mountain scenery, world-class skiing, and pristine hiking trails. A paradise for outdoor enthusiasts year-round.',
+        'The Swiss Alps offer breathtaking mountain scenery, world-class skiing, and pristine hiking trails.',
       ),
       country: 'switzerland',
       type: 'mountain',
@@ -342,15 +342,14 @@ export const seed = async ({
       skiResort: true,
       hikingDifficulty: 'moderate',
       highlights: [
-        { title: 'Matterhorn', description: 'Iconic peak and hiking destination' },
-        { title: 'Alpine Lakes', description: 'Crystal-clear mountain lakes' },
+        { title: 'Matterhorn', description: 'Iconic peak' },
+        { title: 'Alpine Lakes', description: 'Crystal-clear lakes' },
       ],
       bestSeason: 'winter',
       slug: 'swiss-alps',
       _status: 'published',
     },
   })
-
   await payload.create({
     collection: 'destinations',
     depth: 0,
@@ -361,7 +360,7 @@ export const seed = async ({
       title: 'Lake Garda',
       heroImage: image2Doc.id,
       description: lexicalParagraph(
-        'Italy\'s largest lake combines Mediterranean charm with alpine backdrop. Perfect for water sports, wine tasting, and lakeside relaxation.',
+        "Italy's largest lake combines Mediterranean charm with alpine backdrop.",
       ),
       country: 'italy',
       type: 'beach',
@@ -372,15 +371,14 @@ export const seed = async ({
       ],
       beachType: 'pebble',
       highlights: [
-        { title: 'Limone sul Garda', description: 'Charming lakeside town' },
-        { title: 'Olive Groves', description: 'Famous local olive oil' },
+        { title: 'Limone sul Garda', description: 'Charming town' },
+        { title: 'Olive Groves', description: 'Famous olive oil' },
       ],
       bestSeason: 'summer',
       slug: 'lake-garda',
       _status: 'published',
     },
   })
-
   await payload.create({
     collection: 'destinations',
     depth: 0,
@@ -391,15 +389,15 @@ export const seed = async ({
       title: 'Vienna',
       heroImage: image3Doc.id,
       description: lexicalParagraph(
-        'Austria\'s capital blends imperial grandeur with modern culture. Museums, coffee houses, and classical music define this elegant city.',
+        "Austria's capital blends imperial grandeur with modern culture.",
       ),
       country: 'austria',
       type: 'city',
       publicTransport: true,
       walkabilityScore: 9,
       highlights: [
-        { title: 'Schönbrunn Palace', description: 'UNESCO World Heritage site' },
-        { title: 'Coffee House Culture', description: 'Traditional Viennese cafés' },
+        { title: 'Schönbrunn Palace', description: 'UNESCO site' },
+        { title: 'Coffee Houses', description: 'Traditional cafés' },
       ],
       bestSeason: 'year-round',
       slug: 'vienna',
