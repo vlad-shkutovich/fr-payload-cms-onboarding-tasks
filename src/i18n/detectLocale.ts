@@ -1,4 +1,3 @@
-// src/i18n/detectLocale.ts
 import Negotiator from 'negotiator'
 import { match } from '@formatjs/intl-localematcher'
 import { locales, defaultLocale } from './config'

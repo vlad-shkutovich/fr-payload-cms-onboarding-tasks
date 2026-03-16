@@ -1,15 +1,13 @@
-// src/middleware.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { locales, defaultLocale, isValidLocale } from '@/i18n/config'
+import { locales, isValidLocale } from '@/i18n/config'
 import { detectLocale } from '@/i18n/detectLocale'
 
 const COOKIE_NAME = 'NEXT_LOCALE'
-const COOKIE_MAX_AGE = 31536000 // 1 year in seconds
+const COOKIE_MAX_AGE = 31536000
 
 export function middleware(request: NextRequest): NextResponse {
   const { pathname, search } = request.nextUrl
 
-  // Check if the pathname already starts with a valid locale
   const pathnameLocale = locales.find(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   )
@@ -18,7 +16,6 @@ export function middleware(request: NextRequest): NextResponse {
     return NextResponse.next()
   }
 
-  // Determine locale from cookie or Accept-Language header
   const cookieLocale = request.cookies.get(COOKIE_NAME)?.value
   const locale =
     cookieLocale && isValidLocale(cookieLocale)
