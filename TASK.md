@@ -2,6 +2,10 @@
 
 This is a learning onboarding project. The primary goal is not just to complete the tasks, but to **deeply understand Payload CMS** — its architecture, patterns, pitfalls and best practices — in order to be prepared for work on a real production project.
 
+### Version control
+
+**Only the user commits manually.** The agent must not run `git commit`, `git push`, or any other operations that modify repository history. The agent may create and edit files, but committing changes is solely the user's responsibility.
+
 ### What I expect from the agent
 
 When working on any task, the agent should not only write code but also **explain what is happening**:
@@ -32,19 +36,20 @@ When **a task (or step) is completed** and the user has confirmed that it works 
 
 1. **Ask:** «Ready for the theoretical summary block?»
 2. **After confirmation** — generate a comprehensive theoretical block describing the full flow of what was implemented. This goes into the user's **Notion summary** for the project.
+3. **After the user confirms the step is closed** — delete the written plans (design docs, implementation plans) from `docs/plans/`. There is no need to keep them in the repository after implementation.
 
 **Format** — the block must follow this exact structure (self-contained; no external reference needed):
 
 1. **Title** — `# [Feature name] flow` (e.g. `# Localization flow`)
 
-2. **Configuration** — what was set up. Short code snippets with file paths and line numbers. Example:
+2. **Configuration** — what was set up. Short code snippets and bullet points. Do not reference file paths or line numbers — the summary must be self-contained and understandable without opening the codebase. Example:
 
    ```markdown
-   ### Payload (`src/payload.config.ts`)
+   ### Payload config
 
    - Locales, defaultLocale, fallback
 
-   ### Frontend (`src/i18n/config.ts`)
+   ### Frontend i18n
 
    - locales array, isValidLocale()
    ```
@@ -60,7 +65,7 @@ When **a task (or step) is completed** and the user has confirmed that it works 
 
 6. **Optional** — list of localized/affected fields, or other relevant details.
 
-**Style:** ~150–250 lines. Use headers (`##`, `###`), code blocks with `path:line` citations, tables. Standalone reference — no need to open the codebase to understand the flow.
+**Style:** ~150–250 lines. Use headers (`##`, `###`), code blocks, tables. Self-contained — no file paths or line numbers; the reader should understand the flow without opening the codebase.
 
 ---
 
