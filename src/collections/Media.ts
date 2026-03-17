@@ -45,6 +45,32 @@ export const Media: CollectionConfig = {
         },
       }),
     },
+    {
+      name: 'location',
+      type: 'text',
+      admin: {
+        description: 'Where the photo was taken',
+      },
+    },
+    {
+      name: 'photographer',
+      type: 'text',
+      admin: {
+        description: 'Credit / attribution',
+      },
+    },
+    {
+      name: 'usageRights',
+      type: 'select',
+      options: [
+        { label: 'Owned', value: 'owned' },
+        { label: 'Licensed', value: 'licensed' },
+        { label: 'Stock', value: 'stock' },
+      ],
+      admin: {
+        description: 'Usage rights for this media',
+      },
+    },
   ],
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload

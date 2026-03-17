@@ -314,6 +314,18 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Where the photo was taken
+   */
+  location?: string | null;
+  /**
+   * Credit / attribution
+   */
+  photographer?: string | null;
+  /**
+   * Usage rights for this media
+   */
+  usageRights?: ('owned' | 'licensed' | 'stock') | null;
   folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
@@ -1501,6 +1513,9 @@ export interface DestinationsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  location?: T;
+  photographer?: T;
+  usageRights?: T;
   folder?: T;
   updatedAt?: T;
   createdAt?: T;
