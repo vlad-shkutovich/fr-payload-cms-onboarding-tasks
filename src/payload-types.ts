@@ -223,7 +223,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | DestinationShowcaseBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -818,6 +818,21 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DestinationShowcaseBlock".
+ */
+export interface DestinationShowcaseBlock {
+  heading?: string | null;
+  populateBy?: ('manual' | 'filter') | null;
+  selectedDestinations?: (number | Destination)[] | null;
+  country?: ('italy' | 'switzerland' | 'austria' | 'germany' | 'france') | null;
+  type?: ('beach' | 'mountain' | 'city' | 'cultural') | null;
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'destinationShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "destinations".
  */
 export interface Destination {
@@ -1331,6 +1346,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        destinationShowcase?: T | DestinationShowcaseBlockSelect<T>;
       };
   meta?:
     | T
@@ -1427,6 +1443,20 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DestinationShowcaseBlock_select".
+ */
+export interface DestinationShowcaseBlockSelect<T extends boolean = true> {
+  heading?: T;
+  populateBy?: T;
+  selectedDestinations?: T;
+  country?: T;
+  type?: T;
+  limit?: T;
   id?: T;
   blockName?: T;
 }
