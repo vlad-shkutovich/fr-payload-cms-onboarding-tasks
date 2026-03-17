@@ -30,7 +30,11 @@ export const MediaBlock: React.FC<Props> = (props) => {
   } = props
 
   let caption
-  if (media && typeof media === 'object') caption = media.caption
+  let photographer
+  if (media && typeof media === 'object') {
+    caption = media.caption
+    photographer = media.photographer
+  }
 
   return (
     <div
@@ -60,6 +64,11 @@ export const MediaBlock: React.FC<Props> = (props) => {
           )}
         >
           <RichText data={caption} enableGutter={false} />
+        </div>
+      )}
+      {photographer && (
+        <div className={cn('mt-2', captionClassName)}>
+          <span className="text-muted-foreground text-sm">Photo by {photographer}</span>
         </div>
       )}
     </div>
